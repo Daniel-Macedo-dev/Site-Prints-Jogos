@@ -19,51 +19,48 @@ export default function Upload() {
     formData.append("game", game);
     formData.append("description", description);
 
-    const token = localStorage.getItem("token"); // JWT armazenado após login
+    const token = localStorage.getItem("token");
 
     try {
       setStatus("Enviando...");
-      const res = await axios.post(
-        "http://localhost:8080/prints/upload",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      setStatus("Upload feito!");
-      setUrl(res.data.url); // url retornada pelo back-end
+      const res = await axios.post("http://localhost:8080/prints/upload", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setStatus("Upload concluído!");
+      setUrl(res.data.url);
     } catch (err) {
       setStatus("Erro ao enviar: " + (err.response?.data || err.message));
     }
   };
 
   return (
-    <div style={{ padding: "20px" }}>
+    <div className="upload-container">
       <h2>Upload de Print</h2>
-      <input type="file" onChange={(e) => setFile(e.target.files[0])} />
-      <br />
+
+      <input type="file" id="file" onChange={(e) => setFile(e.target.files[0])} />
       <input
         type="text"
         placeholder="Nome do jogo"
         value={game}
         onChange={(e) => setGame(e.target.value)}
       />
-      <br />
       <input
         type="text"
         placeholder="Descrição"
         value={description}
         onChange={(e) => setDescription(e.target.value)}
       />
-      <br />
       <button onClick={handleUpload}>Enviar</button>
-      <p>{status}</p>
+
+      <p className="status">{status}</p>
       {url && (
-        <p>
-          Arquivo enviado: <a href={url} target="_blank">{url}</a>
+        <p className="upload-result">
+          <a href={url} target="_blank" rel="noreferrer">
+            Ver print enviado
+          </a>
         </p>
       )}
     </div>
