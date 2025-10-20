@@ -16,7 +16,10 @@ export default function Gallery() {
         setPrints(res.data);
         setLoading(false);
       })
-      .catch(() => setLoading(false));
+      .catch((err) => {
+        console.error(err);
+        setLoading(false);
+      });
   }, []);
 
   if (loading) return <p>Carregando prints...</p>;
@@ -34,6 +37,7 @@ export default function Gallery() {
               <div className="info">
                 <h3>{p.game}</h3>
                 <p>{p.description}</p>
+                <p className="author">Enviado por: {p.user?.nome || "Desconhecido"}</p>
               </div>
             </div>
           ))}

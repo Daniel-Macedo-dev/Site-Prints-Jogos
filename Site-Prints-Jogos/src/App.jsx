@@ -1,15 +1,36 @@
-import Upload from "./components/Upload";
+import { useState, useEffect } from "react";
+import Signup from "./components/Signup";
+import Login from "./components/Login";
 import Gallery from "./components/Gallery";
-import "./index.css";
+import Upload from "./components/Upload";
 
-function App() {
+export default function App() {
+  const [loggedIn, setLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) setLoggedIn(true);
+  }, []);
+
+  const handleLogin = () => {
+    setLoggedIn(true);
+  };
+
+  if (!loggedIn) {
+    return (
+      <div>
+        <h1>Bem-vindo ao Prints Jogos</h1>
+        <Login onLoginSuccess={handleLogin} />
+        <Signup onLogin={handleLogin} />
+      </div>
+    );
+  }
+
   return (
-    <div className="app">
-      <h1 className="title">Prints de Jogos</h1>
-      <Upload />
+    <div>
+      <h1>Prints Jogos</h1>
       <Gallery />
+      <Upload />
     </div>
   );
 }
-
-export default App;

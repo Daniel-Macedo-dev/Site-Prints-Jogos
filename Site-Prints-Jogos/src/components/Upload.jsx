@@ -31,7 +31,11 @@ export default function Upload() {
       });
       setStatus("Upload concluído!");
       setUrl(res.data.url);
+      setFile(null);
+      setGame("");
+      setDescription("");
     } catch (err) {
+      console.error(err);
       setStatus("Erro ao enviar: " + (err.response?.data || err.message));
     }
   };
@@ -40,7 +44,7 @@ export default function Upload() {
     <div className="upload-container">
       <h2>Upload de Print</h2>
 
-      <input type="file" id="file" onChange={(e) => setFile(e.target.files[0])} />
+      <input type="file" onChange={(e) => setFile(e.target.files[0])} />
       <input
         type="text"
         placeholder="Nome do jogo"
