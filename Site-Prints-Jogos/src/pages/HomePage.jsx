@@ -5,7 +5,7 @@ import Upload from "../components/Upload";
 export default function HomePage() {
   return (
     <div className="container mt-4">
-      <h1 className="text-center mb-4">Galeria de Prints</h1>
+      <h1 className="mb-4">Prints Jogos</h1>
       <Upload />
       <Gallery />
     </div>
