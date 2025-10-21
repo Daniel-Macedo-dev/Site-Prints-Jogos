@@ -1,10 +1,12 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
-export default function Login({ onLoginSuccess }) {
+export default function Login() {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const [status, setStatus] = useState("");
+  const navigate = useNavigate();
 
   const handleLogin = async () => {
     if (!email || !senha) {
@@ -14,22 +16,20 @@ export default function Login({ onLoginSuccess }) {
 
     try {
       const res = await axios.post("http://localhost:8080/auth/login", { email, senha });
-      const token = res.data;
-      localStorage.setItem("token", token);
+      localStorage.setItem("token", res.data);
       setStatus("Login realizado!");
-      onLoginSuccess();
+      navigate("/");
     } catch (err) {
       setStatus("Erro no login: " + (err.response?.data || err.message));
     }
   };
 
   return (
-    <div className="card p-4 shadow-sm" style={{ maxWidth: "400px", margin: "20px auto" }}>
-      <h2 className="text-center mb-3">Login</h2>
+    <div className="card p-4">
       <input className="form-control mb-2" type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
       <input className="form-control mb-2" type="password" placeholder="Senha" value={senha} onChange={(e) => setSenha(e.target.value)} />
       <button className="btn btn-primary w-100" onClick={handleLogin}>Entrar</button>
-      <p className="text-danger mt-2">{status}</p>
+      {status && <p className="mt-2 text-danger">{status}</p>}
     </div>
   );
 }
