@@ -1,7 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 
-export default function Signup({ onLogin }) {
+export default function Signup({ onSignupSuccess }) {
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
@@ -17,42 +17,25 @@ export default function Signup({ onLogin }) {
       setStatus("Criando conta...");
       await axios.post("http://localhost:8080/auth/signup", { nome, email, senha });
 
+      // Login automático
       const loginRes = await axios.post("http://localhost:8080/auth/login", { email, senha });
-      const token = loginRes.data;
+      localStorage.setItem("token", loginRes.data);
 
-      localStorage.setItem("token", token);
       setStatus("Cadastro concluído!");
-
-      onLogin();
-
+      onSignupSuccess();
     } catch (err) {
       setStatus("Erro: " + (err.response?.data || err.message));
     }
   };
 
   return (
-    <div className="signup-container">
-      <h2>Cadastro</h2>
-      <input
-        type="text"
-        placeholder="Nome"
-        value={nome}
-        onChange={(e) => setNome(e.target.value)}
-      />
-      <input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <input
-        type="password"
-        placeholder="Senha"
-        value={senha}
-        onChange={(e) => setSenha(e.target.value)}
-      />
-      <button onClick={handleSignup}>Cadastrar</button>
-      <p>{status}</p>
+    <div className="card p-4 shadow-sm" style={{ maxWidth: "400px", margin: "20px auto" }}>
+      <h2 className="text-center mb-3">Cadastro</h2>
+      <input className="form-control mb-2" type="text" placeholder="Nome" value={nome} onChange={(e) => setNome(e.target.value)} />
+      <input className="form-control mb-2" type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
+      <input className="form-control mb-2" type="password" placeholder="Senha" value={senha} onChange={(e) => setSenha(e.target.value)} />
+      <button className="btn btn-success w-100" onClick={handleSignup}>Cadastrar</button>
+      <p className="text-danger mt-2">{status}</p>
     </div>
   );
 }

@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
-import Signup from "./components/Signup";
-import Login from "./components/Login";
-import Gallery from "./components/Gallery";
-import Upload from "./components/Upload";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import AuthPage from "./pages/AuthPage";
+import HomePage from "./pages/HomePage";
 
 export default function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -12,25 +11,12 @@ export default function App() {
     if (token) setLoggedIn(true);
   }, []);
 
-  const handleLogin = () => {
-    setLoggedIn(true);
-  };
-
-  if (!loggedIn) {
-    return (
-      <div>
-        <h1>Bem-vindo ao Prints Jogos</h1>
-        <Login onLoginSuccess={handleLogin} />
-        <Signup onLogin={handleLogin} />
-      </div>
-    );
-  }
-
   return (
-    <div>
-      <h1>Prints Jogos</h1>
-      <Gallery />
-      <Upload />
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={loggedIn ? <Navigate to="/home" /> : <AuthPage onLoginSuccess={() => setLoggedIn(true)} />} />
+        <Route path="/home" element={loggedIn ? <HomePage /> : <Navigate to="/" />} />
+      </Routes>
+    </Router>
   );
 }
