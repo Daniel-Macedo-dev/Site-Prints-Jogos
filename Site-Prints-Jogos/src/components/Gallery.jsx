@@ -1,19 +1,9 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import React from "react";
 
-export default function Gallery() {
-  const [prints, setPrints] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-
-    axios.get("http://localhost:8080/prints", { headers: { Authorization: `Bearer ${token}` } })
-      .then((res) => setPrints(res.data))
-      .finally(() => setLoading(false));
-  }, []);
-
+export default function Gallery({ prints, loading }) {
   if (loading) return <p>Carregando prints...</p>;
+
+  if (!prints || prints.length === 0) return <p>Nenhum print encontrado.</p>;
 
   return (
     <div className="row">
@@ -24,7 +14,11 @@ export default function Gallery() {
             <div className="card-body">
               <h5 className="card-title">{p.game}</h5>
               <p className="card-text">{p.description}</p>
-              <p className="card-text"><small className="text-muted">Enviado por: {p.user?.nome || "Desconhecido"}</small></p>
+              <p className="card-text">
+                <small className="text-muted">
+                  Enviado por: {p.user?.nome || "Desconhecido"}
+                </small>
+              </p>
             </div>
           </div>
         </div>
