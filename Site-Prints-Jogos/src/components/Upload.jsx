@@ -6,7 +6,7 @@ export default function Upload() {
   const [game, setGame] = useState("");
   const [description, setDescription] = useState("");
   const [status, setStatus] = useState("");
-  const [url, setUrl] = useState("");
+  const [printInfo, setPrintInfo] = useState(null);
 
   const handleUpload = async () => {
     if (!file) {
@@ -20,6 +20,10 @@ export default function Upload() {
     formData.append("description", description);
 
     const token = localStorage.getItem("token");
+    if (!token) {
+      setStatus("Token não encontrado. Faça login novamente.");
+      return;
+    }
 
     try {
       setStatus("Enviando...");
@@ -28,18 +32,19 @@ export default function Upload() {
         formData,
         {
           headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${token}`, 
           },
         }
       );
+
       setStatus("Upload concluído!");
-      setUrl(res.data.url);
+      setPrintInfo(res.data);
       setFile(null);
       setGame("");
       setDescription("");
     } catch (err) {
       setStatus("Erro ao enviar: " + (err.response?.data || err.message));
+      console.error(err.response || err);
     }
   };
 
@@ -63,10 +68,15 @@ export default function Upload() {
       />
       <button onClick={handleUpload} className="btn btn-primary">Enviar</button>
       <p className="mt-2">{status}</p>
-      {url && (
-        <p>
-          <a href={url} target="_blank" rel="noreferrer">Ver print enviado</a>
-        </p>
+
+      {printInfo && (
+        <div className="mt-2">
+          <p><strong>Jogo:</strong> {printInfo.game}</p>
+          <p><strong>Descrição:</strong> {printInfo.description}</p>
+          <p><strong>Enviado por:</strong> {printInfo.userName}</p>
+          <p><strong>Data:</strong> {new Date(printInfo.uploadDate).toLocaleString()}</p>
+          <a href={printInfo.url} target="_blank" rel="noreferrer">Ver print</a>
+        </div>
       )}
     </div>
   );

@@ -29,7 +29,7 @@ export default function Gallery() {
               <p className="card-text">{p.description}</p>
               <p className="card-text">
                 <small style={{ color: "#ffffff" }}>
-                  Enviado por: {p.user?.nome || p.user || "Desconhecido"}
+                  Enviado por: {p.userName || "Desconhecido"}
                 </small>
               </p>
             </div>
