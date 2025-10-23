@@ -16,7 +16,7 @@ export default function Gallery() {
       .finally(() => setLoading(false));
   }, []);
 
-  if (loading) return <p>Carregando prints...</p>;
+  if (loading) return <p style={{ color: "#fff" }}>Carregando prints...</p>;
 
   return (
     <div className="row">
@@ -28,8 +28,8 @@ export default function Gallery() {
               <h5 className="card-title">{p.game}</h5>
               <p className="card-text">{p.description}</p>
               <p className="card-text">
-                <small className="text-muted">
-                  Enviado por: {p.user?.nome || "Desconhecido"}
+                <small style={{ color: "#ffffff" }}>
+                  Enviado por: {p.user?.nome || p.user || "Desconhecido"}
                 </small>
               </p>
             </div>
