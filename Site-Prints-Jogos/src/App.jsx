@@ -15,15 +15,15 @@ export default function App() {
   };
 
   return (
-    <>
+    <div className="app-container">
       <Navbar isLoggedIn={isLoggedIn} onLogout={handleLogout} />
-      <div className="container mt-4">
+      <div className="main-content">
         <Routes>
           <Route path="/" element={isLoggedIn ? <HomePage /> : <Navigate to="/auth" />} />
           <Route path="/auth" element={!isLoggedIn ? <AuthPage onLogin={handleLogin} /> : <Navigate to="/" />} />
         </Routes>
       </div>
       <Footer />
-    </>
+    </div>
   );
 }
