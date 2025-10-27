@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import axios from "axios";
 
 export default function Signup({ onLogin }) {
@@ -8,15 +8,9 @@ export default function Signup({ onLogin }) {
   const [status, setStatus] = useState("");
 
   const handleSignup = async () => {
-    if (!nome || !email || !senha) {
-      setStatus("Preencha todos os campos");
-      return;
-    }
-
+    if (!nome || !email || !senha) return setStatus("Preencha todos os campos");
     try {
-      setStatus("Criando conta...");
       await axios.post("http://localhost:8080/auth/signup", { nome, email, senha });
-
       const loginRes = await axios.post("http://localhost:8080/auth/login", { email, senha });
       localStorage.setItem("token", loginRes.data);
       setStatus("Cadastro concluído!");
@@ -27,13 +21,12 @@ export default function Signup({ onLogin }) {
   };
 
   return (
-    <div>
-      <h2>Cadastro</h2>
-      <input type="text" placeholder="Nome" value={nome} onChange={(e) => setNome(e.target.value)} className="form-control mb-2" />
-      <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} className="form-control mb-2" />
-      <input type="password" placeholder="Senha" value={senha} onChange={(e) => setSenha(e.target.value)} className="form-control mb-2" />
-      <button onClick={handleSignup} className="btn btn-primary">Cadastrar</button>
-      <p>{status}</p>
-    </div>
+    <>
+      <input type="text" placeholder="Nome" className="form-control mb-2" value={nome} onChange={e=>setNome(e.target.value)} />
+      <input type="email" placeholder="Email" className="form-control mb-2" value={email} onChange={e=>setEmail(e.target.value)} />
+      <input type="password" placeholder="Senha" className="form-control mb-2" value={senha} onChange={e=>setSenha(e.target.value)} />
+      <button className="btn btn-outline-light w-100" onClick={handleSignup}>Cadastrar</button>
+      <p className="mt-2">{status}</p>
+    </>
   );
 }

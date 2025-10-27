@@ -1,25 +1,29 @@
-import React, { useState, useEffect } from "react";
-import { Routes, Route } from "react-router-dom";
+import { useState } from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
 import AuthPage from "./pages/AuthPage";
 import HomePage from "./pages/HomePage";
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
 
-function App() {
-  const [loggedIn, setLoggedIn] = useState(false);
+export default function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("token"));
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) setLoggedIn(true);
-  }, []);
+  const handleLogin = () => setIsLoggedIn(true);
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    setIsLoggedIn(false);
+  };
 
   return (
-    <Routes>
-      {!loggedIn ? (
-        <Route path="*" element={<AuthPage onLogin={() => setLoggedIn(true)} />} />
-      ) : (
-        <Route path="*" element={<HomePage />} />
-      )}
-    </Routes>
+    <>
+      <Navbar isLoggedIn={isLoggedIn} onLogout={handleLogout} />
+      <div className="container mt-4">
+        <Routes>
+          <Route path="/" element={isLoggedIn ? <HomePage /> : <Navigate to="/auth" />} />
+          <Route path="/auth" element={!isLoggedIn ? <AuthPage onLogin={handleLogin} /> : <Navigate to="/" />} />
+        </Routes>
+      </div>
+      <Footer />
+    </>
   );
 }
-
-export default App;

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import axios from "axios";
 
 export default function Login({ onLoginSuccess }) {
@@ -7,28 +7,23 @@ export default function Login({ onLoginSuccess }) {
   const [status, setStatus] = useState("");
 
   const handleLogin = async () => {
-    if (!email || !senha) {
-      setStatus("Preencha todos os campos");
-      return;
-    }
-
+    if (!email || !senha) return setStatus("Preencha todos os campos");
     try {
       const res = await axios.post("http://localhost:8080/auth/login", { email, senha });
       localStorage.setItem("token", res.data);
       setStatus("Login realizado!");
       onLoginSuccess();
     } catch (err) {
-      setStatus("Erro no login: " + (err.response?.data || err.message));
+      setStatus("Erro: " + (err.response?.data || err.message));
     }
   };
 
   return (
-    <div>
-      <h2>Login</h2>
-      <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} className="form-control mb-2" />
-      <input type="password" placeholder="Senha" value={senha} onChange={(e) => setSenha(e.target.value)} className="form-control mb-2" />
-      <button onClick={handleLogin} className="btn btn-success">Entrar</button>
-      <p>{status}</p>
-    </div>
+    <>
+      <input type="email" placeholder="Email" className="form-control mb-2" value={email} onChange={e=>setEmail(e.target.value)} />
+      <input type="password" placeholder="Senha" className="form-control mb-2" value={senha} onChange={e=>setSenha(e.target.value)} />
+      <button className="btn btn-outline-light w-100" onClick={handleLogin}>Entrar</button>
+      <p className="mt-2">{status}</p>
+    </>
   );
 }

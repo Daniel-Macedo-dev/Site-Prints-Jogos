@@ -1,13 +1,13 @@
-import React from "react";
-import Gallery from "../components/Gallery";
 import Upload from "../components/Upload";
+import Gallery from "../components/Gallery";
 
 export default function HomePage() {
   return (
-    <div className="container mt-4">
-      <h1 className="mb-4">Prints Jogos</h1>
-      <Upload />
+    <>
+      <div className="mb-4">
+        <Upload />
+      </div>
       <Gallery />
-    </div>
+    </>
   );
 }
