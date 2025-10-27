@@ -1,74 +1,135 @@
-html, body, #root {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-}
-
 body {
-  background-color: #0d0d0d;
+  background: url('https://i.redd.it/3fwyegfl5fpf1.jpeg') no-repeat center center fixed;
+  background-size: cover;
   color: #e0e0e0;
   font-family: 'Inter', sans-serif;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
 }
 
 .app-container {
-  flex: 1;
   display: flex;
   flex-direction: column;
+  min-height: 100vh;
 }
 
 .main-content {
   flex: 1;
-  display: flex;
-  justify-content: center; 
-  align-items: center;    
-  padding: 4rem 2rem 2rem; 
+  padding: 2rem 1rem;
 }
 
-.auth-cards {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 2rem;
-  justify-content: center;
-  width: 100%;
-  max-width: 900px;
-}
-
-.auth-card {
-  flex: 1 1 300px;
+.card {
   background: linear-gradient(180deg, #111, #0f0f0f);
-  padding: 2rem;
+  border: 1px solid rgba(255,255,255,0.04);
   border-radius: 12px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.5);
   transition: transform 0.22s ease, box-shadow 0.22s ease;
-  color: #fff;
+  overflow: hidden;
 }
 
-.auth-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 25px rgba(0,0,0,0.6);
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6), 0 0 12px rgba(255,255,255,0.03);
 }
 
-.auth-card h2 {
-  text-align: center;
-  margin-bottom: 1.5rem;
+.card-body {
+  padding: 0.9rem;
 }
 
-footer {
-  background-color: #0d0d0d;
-  color: #fff;
-  text-align: center;
-  padding: 1rem 0;
-  margin-top: auto; 
+.card-title,
+.card-text,
+.card-text small {
+  color: #ffffff;
 }
 
-footer a {
-  color: #ffc107; 
+.form-control {
+  background-color: #121212;
+  border: 1px solid rgba(255,255,255,0.06);
+  color: #ffffff;
+  border-radius: 8px;
+  padding: 0.55rem 0.75rem;
+}
+
+.form-control::placeholder {
+  color: #aaaaaa;
+}
+
+.form-control:focus {
+  background-color: #151515;
+  border-color: rgba(255,255,255,0.14);
+  box-shadow: 0 0 8px rgba(255,255,255,0.05);
+  color: #ffffff;
+}
+
+.btn-primary,
+.btn-outline-light {
+  background: linear-gradient(90deg, #161616, #2a2a2a);
+  border: 1px solid rgba(255,255,255,0.08);
+  color: #ffffff;
+  border-radius: 8px;
+  padding: 0.55rem 0.9rem;
+  transition: all 0.22s ease;
+}
+
+.btn-primary:hover,
+.btn-outline-light:hover {
+  box-shadow: 0 0 12px rgba(255,255,255,0.06);
+  transform: translateY(-2px);
+}
+
+a {
+  color: #ffffff;
   text-decoration: none;
 }
 
-footer a:hover {
-  color: #fff;
-  text-decoration: underline;
+a:hover {
+  color: #ccc;
+}
+
+/* Footer */
+footer {
+  background-color: #0d0d0d;
+  text-align: center;
+  padding: 1rem 0;
+  margin-top: auto;
+}
+
+footer a {
+  color: #FFD700;
+  font-weight: bold;
+}
+
+.upload-area {
+  background: linear-gradient(90deg, #0f0f0f, #111);
+  border: 1px dashed rgba(255,255,255,0.04);
+  padding: 1rem;
+  border-radius: 10px;
+  transition: all 0.2s ease;
+}
+
+.upload-area:hover {
+  border-color: rgba(255, 255, 0, 0.3);
+  box-shadow: 0 0 12px rgba(255, 255, 0, 0.1);
+}
+
+.modal.show.d-block {
+  background-color: rgba(0,0,0,0.8);
+}
+
+.modal-content {
+  background-color: #111;
+  border: none;
+}
+
+.modal img {
+  max-height: 80vh;
+  display: block;
+  margin: auto;
+  border-radius: 8px;
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    padding: 1rem;
+  }
 }
