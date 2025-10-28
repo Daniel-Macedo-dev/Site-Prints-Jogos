@@ -1,14 +1,16 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { mockPrints } from "../mockData"; 
+import { mockPrints } from "../mockData";
 
-export default function Gallery({ useMock = false }) { 
+export default function Gallery() {
   const [prints, setPrints] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState(null);
 
+  const useMock = window.location.hostname !== "localhost";
+
   useEffect(() => {
-    if (useMock) {  
+    if (useMock) {
       setPrints(mockPrints);
       setLoading(false);
       return;
