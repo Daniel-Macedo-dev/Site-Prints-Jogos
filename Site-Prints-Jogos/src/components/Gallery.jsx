@@ -1,12 +1,19 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { mockPrints } from "../mockData"; 
 
-export default function Gallery() {
+export default function Gallery({ useMock = false }) { 
   const [prints, setPrints] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState(null);
 
   useEffect(() => {
+    if (useMock) {  
+      setPrints(mockPrints);
+      setLoading(false);
+      return;
+    }
+
     const token = localStorage.getItem("token");
     axios
       .get("http://localhost:8080/prints", {
@@ -14,7 +21,7 @@ export default function Gallery() {
       })
       .then(res => setPrints(res.data))
       .finally(() => setLoading(false));
-  }, []);
+  }, [useMock]);
 
   if (loading) return <p>Carregando prints...</p>;
 
