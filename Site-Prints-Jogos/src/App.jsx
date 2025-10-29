@@ -7,6 +7,7 @@ import Footer from "./components/Footer";
 
 export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("token"));
+  const isStatic = window.location.hostname !== "localhost";
 
   const handleLogin = () => setIsLoggedIn(true);
   const handleLogout = () => {
@@ -19,8 +20,26 @@ export default function App() {
       <Navbar isLoggedIn={isLoggedIn} onLogout={handleLogout} />
       <div className="main-content">
         <Routes>
-          <Route path="/" element={isLoggedIn ? <HomePage /> : <Navigate to="/auth" />} />
-          <Route path="/auth" element={!isLoggedIn ? <AuthPage onLogin={handleLogin} /> : <Navigate to="/" />} />
+          {isStatic ? (
+            <Route path="*" element={<HomePage />} />
+          ) : (
+            <>
+              <Route
+                path="/"
+                element={isLoggedIn ? <HomePage /> : <Navigate to="/auth" />}
+              />
+              <Route
+                path="/auth"
+                element={
+                  !isLoggedIn ? (
+                    <AuthPage onLogin={handleLogin} />
+                  ) : (
+                    <Navigate to="/" />
+                  )
+                }
+              />
+            </>
+          )}
         </Routes>
       </div>
       <Footer />
