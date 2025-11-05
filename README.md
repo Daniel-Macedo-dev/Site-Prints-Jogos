@@ -26,7 +26,6 @@ Site-Prints-Jogos/
 │   └── main.jsx            # Ponto de entrada
 ├── package.json
 └── vite.config.js
-
 ```
 ## 🚀 Funcionalidades
 
