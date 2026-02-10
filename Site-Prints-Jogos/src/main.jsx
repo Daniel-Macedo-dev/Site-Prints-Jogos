@@ -2,12 +2,11 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, HashRouter } from "react-router-dom";
 import App from "./App";
-import "bootstrap/dist/css/bootstrap.min.css";
 import "./index.css";
 import "./styles/custom.css";
+import "./styles/bootstrap-lite.css";
 
-const isStatic = window.location.hostname !== "localhost";
-const Router = isStatic ? HashRouter : BrowserRouter;
+const Router = import.meta.env.PROD ? HashRouter : BrowserRouter;
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
