@@ -1,0 +1,321 @@
+
+/* ---------- Reset / Base ---------- */
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+img { max-width: 100%; height: auto; display: block; }
+button { font: inherit; }
+a { color: #ffffff; text-decoration: none; }
+a:hover { color: #ccc; }
+
+/* Não força layout do template antigo */
+#root { min-height: 100%; }
+
+/* ---------- Tema (era custom.css) ---------- */
+body {
+  background: url('https://i.redd.it/3fwyegfl5fpf1.jpeg') no-repeat center center fixed;
+  background-size: cover;
+  color: #e0e0e0;
+  font-family: 'Inter', sans-serif;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.main-content {
+  flex: 1;
+  padding: 2rem 1rem;
+}
+
+/* Cards */
+.card {
+  background: linear-gradient(180deg, #111, #0f0f0f);
+  border: 1px solid rgba(255,255,255,0.04);
+  border-radius: 12px;
+  transition: transform 0.22s ease, box-shadow 0.22s ease;
+  overflow: hidden;
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6), 0 0 12px rgba(255,255,255,0.03);
+}
+
+.card-body { padding: 0.9rem; }
+
+.card-title,
+.card-text,
+.card-text small { color: #ffffff; }
+
+/* Forms */
+.form-control {
+  background-color: #121212;
+  border: 1px solid rgba(255,255,255,0.06);
+  color: #ffffff;
+  border-radius: 8px;
+  padding: 0.55rem 0.75rem;
+  width: 100%;
+}
+
+.form-control::placeholder { color: #aaaaaa; }
+
+.form-control:focus {
+  background-color: #151515;
+  border-color: rgba(255,255,255,0.14);
+  box-shadow: 0 0 8px rgba(255,255,255,0.05);
+  color: #ffffff;
+  outline: none;
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  user-select: none;
+  text-decoration: none;
+  border-radius: 8px;
+}
+
+.btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.btn-primary,
+.btn-outline-light {
+  background: linear-gradient(90deg, #161616, #2a2a2a);
+  border: 1px solid rgba(255,255,255,0.08);
+  color: #ffffff;
+  border-radius: 8px;
+  padding: 0.55rem 0.9rem;
+  transition: all 0.22s ease;
+}
+
+.btn-primary:hover,
+.btn-outline-light:hover {
+  box-shadow: 0 0 12px rgba(255,255,255,0.06);
+  transform: translateY(-2px);
+}
+
+/* Footer */
+footer {
+  background-color: #0d0d0d;
+  text-align: center;
+  padding: 1rem 0;
+  margin-top: auto;
+}
+
+footer a {
+  color: #FFD700;
+  font-weight: bold;
+}
+
+/* Upload area */
+.upload-area {
+  background: linear-gradient(90deg, #0f0f0f, #111);
+  border: 1px dashed rgba(255,255,255,0.04);
+  padding: 1rem;
+  border-radius: 10px;
+  transition: all 0.2s ease;
+}
+.upload-area:hover {
+  border-color: rgba(255, 255, 0, 0.3);
+  box-shadow: 0 0 12px rgba(255, 255, 0, 0.1);
+}
+
+/* Modal */
+.modal { position: fixed; inset: 0; z-index: 1000; }
+.modal.show.d-block { display: block; background-color: rgba(0,0,0,0.8); }
+.modal-content { background-color: #111; border: none; border-radius: 12px; overflow: hidden; }
+.modal img { max-height: 80vh; display: block; margin: auto; border-radius: 8px; }
+
+/* ---------- Classes que estavam no App.css (mantendo tema escuro) ---------- */
+.auth-container,
+.signup-container,
+.upload-container {
+  margin: 1.5rem auto;
+  padding: 2rem;
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 12px;
+  max-width: 420px;
+  background: rgba(0,0,0,0.55);
+  backdrop-filter: blur(10px);
+  text-align: left;
+}
+
+.auth-container input,
+.signup-container input,
+.upload-container input {
+  width: 100%;
+  padding: 0.7rem;
+  margin: 0.5rem 0;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.06);
+  background: #121212;
+  color: #fff;
+  font-size: 1rem;
+}
+
+.auth-container button,
+.signup-container button,
+.upload-container button {
+  width: 100%;
+  margin-top: 1rem;
+}
+
+/* status (mensagens) */
+.status {
+  margin-top: 0.8rem;
+  color: #ff6b6b;
+  font-weight: bold;
+}
+
+/* Gallery (grid antigo do App.css) */
+.gallery-container {
+  margin: 2rem auto;
+  text-align: center;
+}
+
+.gallery-container .grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+/* Card “info” antigo */
+.card .info { padding: 0.7rem; }
+.card .info h3 {
+  margin: 0.3rem 0;
+  font-size: 1.1rem;
+  color: #fff;
+}
+.card .info p {
+  font-size: 0.9rem;
+  color: rgba(255,255,255,0.75);
+}
+
+/* Links do resultado de upload */
+.upload-container .upload-result a {
+  color: #ffffff;
+  font-weight: bold;
+  text-decoration: none;
+}
+.upload-container .upload-result a:hover { text-decoration: underline; }
+
+/* ---------- Estrutura mínima (sem Bootstrap) ---------- */
+.container {
+  width: min(1140px, calc(100% - 2rem));
+  margin: 0 auto;
+}
+
+.text-center { text-align: center; }
+.text-white { color: #fff; }
+.text-muted { opacity: 0.75; }
+.bg-dark { background-color: rgba(0,0,0,0.55); }
+.shadow { box-shadow: 0 12px 30px rgba(0,0,0,0.55); }
+
+.mt-2 { margin-top: .5rem; }
+.mt-3 { margin-top: 1rem; }
+.mt-4 { margin-top: 1.5rem; }
+.mb-2 { margin-bottom: .5rem; }
+.mb-3 { margin-bottom: 1rem; }
+.p-2 { padding: .5rem; }
+.p-4 { padding: 1.5rem; }
+.py-3 { padding-top: 1rem; padding-bottom: 1rem; }
+.w-100 { width: 100%; }
+.ms-auto { margin-left: auto; }
+
+/* Row/Cols (caso seus components usem col-*) */
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-left: -.5rem;
+  margin-right: -.5rem;
+}
+.row > * { padding-left: .5rem; padding-right: .5rem; }
+.col-12 { flex: 0 0 100%; max-width: 100%; }
+@media (min-width: 576px) { .col-sm-6 { flex: 0 0 50%; max-width: 50%; } }
+@media (min-width: 768px) { .col-md-4 { flex: 0 0 33.3333%; max-width: 33.3333%; } }
+@media (min-width: 992px) { .col-lg-3 { flex: 0 0 25%; max-width: 25%; } }
+
+/* Navbar (sem Bootstrap JS) */
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  backdrop-filter: blur(8px);
+}
+.navbar .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: .75rem 0;
+}
+.navbar-brand { font-weight: 800; letter-spacing: .3px; }
+.navbar-nav {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: .75rem;
+  align-items: center;
+}
+.nav-item { display: flex; }
+.nav-link {
+  display: inline-flex;
+  padding: .35rem .55rem;
+  border-radius: 8px;
+  opacity: .95;
+}
+.nav-link:hover { background: rgba(255,255,255,0.06); }
+
+/* collapse */
+.collapse { display: none; }
+.collapse.show { display: block; }
+.navbar-collapse { margin-top: .75rem; }
+
+/* toggler */
+.navbar-toggler {
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(255,255,255,0.06);
+  border-radius: 10px;
+  padding: .4rem .55rem;
+}
+.navbar-toggler-icon {
+  width: 22px;
+  height: 16px;
+  display: inline-block;
+  background:
+    linear-gradient(#fff, #fff) 0 0 / 100% 2px no-repeat,
+    linear-gradient(#fff, #fff) 0 7px / 100% 2px no-repeat,
+    linear-gradient(#fff, #fff) 0 14px / 100% 2px no-repeat;
+  opacity: .9;
+}
+@media (min-width: 992px) {
+  .navbar-toggler { display: none; }
+  .navbar-collapse { display: block !important; margin-top: 0; }
+  .collapse { display: block; }
+}
+
+/* Modal dialog (se usar essas classes) */
+.modal-dialog {
+  width: min(900px, calc(100% - 2rem));
+  margin: 3rem auto;
+}
+.modal-dialog-centered {
+  display: flex;
+  align-items: center;
+  min-height: calc(100vh - 6rem);
+}
+.modal-body { padding: 0; }
+
+/* Responsivo */
+@media (max-width: 768px) {
+  .main-content { padding: 1rem; }
+}
