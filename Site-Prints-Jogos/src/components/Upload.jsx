@@ -1,6 +1,9 @@
 import { useState } from "react";
 import axios from "axios";
 
+const API_BASE =
+  (import.meta.env?.VITE_API_URL?.toString() || "http://localhost:8080").replace(/\/$/, "");
+
 export default function Upload() {
   const [file, setFile] = useState(null);
   const [game, setGame] = useState("");
@@ -9,6 +12,9 @@ export default function Upload() {
   const [printInfo, setPrintInfo] = useState(null);
 
   const handleUpload = async () => {
+    setStatus("");
+    setPrintInfo(null);
+
     if (!file) return setStatus("Selecione um arquivo");
     if (!game) return setStatus("Informe o nome do jogo");
 
@@ -22,9 +28,10 @@ export default function Upload() {
 
     try {
       setStatus("Enviando...");
-      const res = await axios.post("http://localhost:8080/prints/upload", formData, {
+      const res = await axios.post(`${API_BASE}/prints/upload`, formData, {
         headers: { Authorization: `Bearer ${token}` },
       });
+
       setPrintInfo(res.data);
       setStatus("Upload concluído!");
       setFile(null);
@@ -36,16 +43,40 @@ export default function Upload() {
   };
 
   return (
-    <div className="p-4 bg-dark text-white rounded shadow">
-      <h3>Upload de Print</h3>
-      <input type="file" className="form-control mb-2" onChange={e => setFile(e.target.files[0])} />
-      <input type="text" placeholder="Nome do jogo" className="form-control mb-2" value={game} onChange={e => setGame(e.target.value)} />
-      <input type="text" placeholder="Descrição" className="form-control mb-2" value={description} onChange={e => setDescription(e.target.value)} />
-      <button className="btn btn-outline-light w-100" onClick={handleUpload}>Enviar</button>
-      <p className="mt-2">{status}</p>
+    <div className="upload-container">
+      <h3 style={{ marginTop: 0 }}>Upload de Print</h3>
+
+      <div className="upload-area mb-3">
+        <input
+          type="file"
+          className="form-control"
+          onChange={e => setFile(e.target.files?.[0] || null)}
+        />
+      </div>
+
+      <input
+        type="text"
+        placeholder="Nome do jogo"
+        className="form-control mb-2"
+        value={game}
+        onChange={e => setGame(e.target.value)}
+      />
+      <input
+        type="text"
+        placeholder="Descrição"
+        className="form-control mb-2"
+        value={description}
+        onChange={e => setDescription(e.target.value)}
+      />
+
+      <button className="btn btn-outline-light w-100" onClick={handleUpload}>
+        Enviar
+      </button>
+
+      {status && <p className="status">{status}</p>}
 
       {printInfo && (
-        <div className="mt-3 p-2 bg-secondary bg-opacity-25 rounded">
+        <div className="upload-result">
           <p><strong>Jogo:</strong> {printInfo.game}</p>
           <p><strong>Descrição:</strong> {printInfo.description}</p>
           <p><strong>Enviado por:</strong> {printInfo.username}</p>
