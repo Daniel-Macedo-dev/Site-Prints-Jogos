@@ -19,6 +19,7 @@ export default function Gallery() {
   const [prints, setPrints] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState(null);
+  const [source, setSource] = useState("api"); // "api" | "mock"
 
   // Controls
   const [search, setSearch] = useState("");
@@ -26,34 +27,34 @@ export default function Gallery() {
   const [user, setUser] = useState("all");
   const [sort, setSort] = useState("new"); // new | old | az | za
 
-  // PROD (S3/GH Pages) por padrão usa mock.
-  const shouldUseMock = useMemo(() => import.meta.env.PROD, []);
-
   useEffect(() => {
     let alive = true;
 
     async function load() {
       setLoading(true);
-
-      if (shouldUseMock) {
-        if (alive) {
-          setPrints(mockPrints);
-          setLoading(false);
-        }
-        return;
-      }
+      setSource("api");
 
       const token = localStorage.getItem("token");
 
       try {
         const res = await axios.get(`${API_BASE}/prints`, {
           headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+          timeout: 12000,
         });
-        if (alive) setPrints(Array.isArray(res.data) ? res.data : []);
-      } catch {
-        if (alive) setPrints(mockPrints);
-      } finally {
-        if (alive) setLoading(false);
+
+        const data = Array.isArray(res.data) ? res.data : [];
+        if (!alive) return;
+
+        setPrints(data);
+        setLoading(false);
+      } catch (err) {
+        // fallback pro mock se API falhar
+        if (!alive) return;
+        console.warn("[Gallery] API failed, falling back to mock:", err?.message || err);
+
+        setSource("mock");
+        setPrints(Array.isArray(mockPrints) ? mockPrints : []);
+        setLoading(false);
       }
     }
 
@@ -61,7 +62,7 @@ export default function Gallery() {
     return () => {
       alive = false;
     };
-  }, [shouldUseMock]);
+  }, []);
 
   // ESC fecha modal
   useEffect(() => {
@@ -107,16 +108,13 @@ export default function Gallery() {
       if (user !== "all" && u !== user) return false;
 
       if (!q) return true;
-
-      const hay = `${g} ${u} ${d}`.toLowerCase();
-      return hay.includes(q);
+      return `${g} ${u} ${d}`.toLowerCase().includes(q);
     });
 
     list = [...list].sort((a, b) => {
       if (sort === "az") return safeLower(a.game).localeCompare(safeLower(b.game));
       if (sort === "za") return safeLower(b.game).localeCompare(safeLower(a.game));
 
-      // new/old: tenta uploadDate, senão usa id (maior = mais novo)
       const ad = parseDateMaybe(a.uploadDate);
       const bd = parseDateMaybe(b.uploadDate);
 
@@ -138,7 +136,6 @@ export default function Gallery() {
 
   return (
     <>
-      {/* Controls */}
       <div className="gallery-controls mb-3">
         <div className="controls-row">
           <input
@@ -177,11 +174,10 @@ export default function Gallery() {
         </div>
 
         <div className="controls-meta text-muted">
-          {loading ? "Carregando..." : `${filtered.length} print(s)`}
+          {loading ? "Carregando..." : `${filtered.length} print(s) • fonte: ${source}`}
         </div>
       </div>
 
-      {/* Loading skeleton */}
       {loading ? (
         <div className="row">
           {Array.from({ length: 8 }).map((_, i) => (
@@ -235,7 +231,6 @@ export default function Gallery() {
         </div>
       )}
 
-      {/* Modal */}
       {selected && (
         <div
           className="modal show d-block"
@@ -256,12 +251,7 @@ export default function Gallery() {
                 </div>
 
                 <div className="modal-actions">
-                  <a
-                    className="btn btn-outline-light"
-                    href={selected.url}
-                    target="_blank"
-                    rel="noreferrer"
-                  >
+                  <a className="btn btn-outline-light" href={selected.url} target="_blank" rel="noreferrer">
                     Abrir
                   </a>
                   <button className="btn btn-outline-light" onClick={() => setSelected(null)} type="button">
