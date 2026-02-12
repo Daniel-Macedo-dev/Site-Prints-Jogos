@@ -384,3 +384,98 @@ footer a {
 @media (max-width: 768px) {
   .main-content { padding: 1rem; }
 }
+/* ---------- Pequenos utilitários compat (pra não depender de bootstrap) ---------- */
+.shadow-sm { box-shadow: 0 10px 24px rgba(0,0,0,0.45); }
+.img-fluid { max-width: 100%; height: auto; display: block; }
+.rounded { border-radius: 12px; }
+.p-0 { padding: 0 !important; }
+
+/* ---------- Gallery controls (busca / filtros / ordenação) ---------- */
+.gallery-controls {
+  border: 1px solid rgba(255,255,255,0.06);
+  background: rgba(0,0,0,0.55);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  padding: 0.9rem;
+}
+
+.controls-row {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr 1fr 1fr auto;
+  gap: 0.6rem;
+  align-items: center;
+}
+
+.controls-meta {
+  margin-top: 0.6rem;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 1100px) {
+  .controls-row { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 520px) {
+  .controls-row { grid-template-columns: 1fr; }
+}
+
+/* ---------- Empty state ---------- */
+.empty-state {
+  border: 1px dashed rgba(255,255,255,0.10);
+  background: rgba(0,0,0,0.45);
+  border-radius: 12px;
+  padding: 1.2rem;
+  text-align: center;
+}
+
+/* ---------- Skeleton loading ---------- */
+.skeleton {
+  border-radius: 10px;
+  background: rgba(255,255,255,0.06);
+  position: relative;
+  overflow: hidden;
+}
+.skeleton::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
+  animation: skeleton-shimmer 1.1s infinite;
+}
+@keyframes skeleton-shimmer {
+  100% { transform: translateX(100%); }
+}
+.skeleton-img { height: 180px; }
+.skeleton-line { height: 12px; margin-bottom: 10px; }
+.skeleton-line.short { width: 70%; }
+.skeleton-line.tiny { width: 45%; height: 10px; margin-bottom: 0; }
+
+/* ---------- Modal header + descrição ---------- */
+.modal-header-custom {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.9rem;
+  padding: 0.9rem;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.modal-title-wrap { min-width: 0; }
+.modal-title-text {
+  font-weight: 800;
+  color: #fff;
+  line-height: 1.2;
+  margin-bottom: 0.2rem;
+  word-break: break-word;
+}
+.modal-subtitle { font-size: 0.9rem; }
+.modal-actions {
+  display: inline-flex;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+.modal-desc {
+  padding: 0.85rem 0.95rem 1rem 0.95rem;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  color: rgba(255,255,255,0.85);
+  font-size: 0.95rem;
+}
