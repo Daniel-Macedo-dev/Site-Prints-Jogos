@@ -1,56 +1,100 @@
 # 🎮 Site Prints Jogos
 
-Aplicação **frontend** desenvolvida em **React + Vite** para exibir prints de jogos enviados via API.
-O site conta com **galeria de imagens**, **área de upload (simulada no modo estático)** e **suporte à integração com o backend de upload**.
+Aplicação frontend desenvolvida em **React + Vite** para exibição e upload de prints de jogos.  
+O projeto foi criado para funcionar integrado à **Upload API** em ambiente local e também possui uma versão publicada no **GitHub Pages**, usada como demonstração estática da interface.
+
+---
+
+## 📌 Visão Geral
+
+O **Site Prints Jogos** funciona como a interface visual do ecossistema formado junto com a **Upload API**, permitindo:
+
+- exibir prints de jogos em uma galeria visual
+- realizar upload de imagens quando conectado ao backend local
+- navegar pela interface em modo estático no GitHub Pages
+- testar a experiência visual do projeto mesmo sem a API em execução
+
+---
 
 ## 🧱 Tecnologias Utilizadas
 
-* React 19
-* Vite 7
-* Axios
-* React Router DOM
-* Bootstrap 5
-* gh-pages (para deploy estático)
+- **React 19**
+- **Vite 7**
+- **Axios**
+- **React Router DOM**
+- **Bootstrap 5**
+- **gh-pages** *(deploy estático)*
 
-## 📁 Estrutura do Projeto
+---
 
-```
+## 🏛️ Estrutura do Projeto
+
+```text
 Site-Prints-Jogos/
-├── public/                 # Arquivos públicos (favicon, etc)
+├── public/                 # Arquivos públicos
 ├── src/
-│   ├── components/         # Navbar, Footer, etc
-│   ├── pages/              # Páginas (HomePage, AuthPage)
-│   ├── mockData.js         # Dados mockados para o modo estático
+│   ├── components/         # Componentes reutilizáveis (Navbar, Footer, etc.)
+│   ├── pages/              # Páginas principais da aplicação
+│   ├── mockData.js         # Dados mockados usados no modo estático
 │   ├── styles/             # Estilos customizados
 │   ├── App.jsx             # Estrutura principal de rotas
-│   └── main.jsx            # Ponto de entrada
+│   └── main.jsx            # Ponto de entrada da aplicação
 ├── package.json
 └── vite.config.js
-```
+````
+
+---
+
 ## 🚀 Funcionalidades
 
 * Exibição de **prints de jogos** em cards
-* **Galeria com visualização em tela cheia**
-* Área de **upload (simulada)** para manter a interface completa no modo estático
-* Integração com o backend (modo dinâmico, quando em `localhost`)
-* Modo **estático** automático quando hospedado via GitHub Pages
+* **Galeria com visualização ampliada**
+* Área de **upload de imagens**
+* Integração com o backend em ambiente local
+* Modo **estático automático** quando publicado no GitHub Pages
+* Navegação entre páginas com **React Router DOM**
 
-## ⚙️ Execução do Projeto
+---
 
-### 🔹 Ambiente de Desenvolvimento
+## 🌐 Modos de Execução
+
+O projeto pode funcionar de duas formas:
+
+### 1. Modo local com backend
+
+Quando executado localmente, o frontend pode consumir dados reais da **Upload API**, permitindo listagem e envio de prints.
+
+### 2. Modo estático no GitHub Pages
+
+Quando publicado no GitHub Pages, a aplicação utiliza dados mockados definidos em `mockData.js`, funcionando apenas como demonstração visual da interface.
+
+---
+
+## ⚙️ Como Executar o Projeto
+
+### Pré-requisitos
+
+Antes de iniciar, tenha instalado:
+
+* Node.js
+* npm
+
+### Ambiente de desenvolvimento
 
 ```bash
 npm install
 npm run dev
 ```
 
-O projeto será iniciado em:
+A aplicação será iniciada em:
 
-```
+```text
 http://localhost:5173/
 ```
 
-### 🔹 Build de Produção
+---
+
+## 🏗️ Build de Produção
 
 ```bash
 npm run build
@@ -58,7 +102,9 @@ npm run build
 
 Os arquivos finais serão gerados na pasta `dist/`.
 
-## 🌐 Deploy no GitHub Pages
+---
+
+## 🚀 Deploy no GitHub Pages
 
 O projeto utiliza o pacote `gh-pages` para publicação automática.
 
@@ -66,17 +112,19 @@ O projeto utiliza o pacote `gh-pages` para publicação automática.
 npm run deploy
 ```
 
-Isso cria (ou atualiza) a branch `gh-pages` com os arquivos da pasta `dist/`, tornando o site acessível em:
+Isso cria ou atualiza a branch `gh-pages` com os arquivos da pasta `dist/`, publicando a aplicação em:
 
-```
+```text
 https://<seu-usuario>.github.io/Site-Prints-Jogos
 ```
 
-> **Obs:** no modo estático, os dados vêm de `mockData.js`, sem necessidade de API.
+> **Observação:** no GitHub Pages, o projeto funciona em modo estático e utiliza os dados de `mockData.js`.
+
+---
 
 ## 🔄 Integração com o Backend
 
-Quando executado em `localhost`, o frontend busca dados reais da API:
+Quando executado em `localhost`, o frontend pode buscar dados reais da API, como no exemplo abaixo:
 
 ```js
 axios.get("http://localhost:8080/prints", {
@@ -84,19 +132,38 @@ axios.get("http://localhost:8080/prints", {
 });
 ```
 
-Em produção (GitHub Pages ou outro domínio), ele automaticamente usa o modo **mockado**.
+Em produção, o projeto usa automaticamente o modo mockado.
 
-## 🧩 Estrutura de Rotas
+---
+
+## 🧭 Rotas da Aplicação
 
 | Caminho | Descrição                                   |
 | ------- | ------------------------------------------- |
 | `/`     | Página inicial com galeria e área de upload |
 | `/auth` | Página de autenticação de usuários          |
 
-## 🧠 Conceito
+---
 
-O **Site Prints Jogos** serve como interface para o projeto **Upload API**, permitindo visualizar e simular o envio de imagens de jogos, unindo front e back em um ecossistema completo.
+## 🧠 Objetivo do Projeto
+
+Este projeto foi desenvolvido com foco em:
+
+* prática de frontend com React + Vite
+* integração com uma API Java Spring Boot
+* construção de interface para upload e exibição de imagens
+* separação entre modo estático e modo dinâmico
+* composição de portfólio com projeto full stack
+
+---
+
+## 🔗 Projeto Relacionado
+
+Backend utilizado no ecossistema do projeto:
+
+* **Upload API** — responsável por autenticação, upload para Amazon S3 e gerenciamento dos prints
+
+---
 
 ## 📄 Licença
-
 Este projeto está licenciado sob a **MIT License**.
