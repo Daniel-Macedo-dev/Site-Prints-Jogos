@@ -21,7 +21,7 @@ export default function Signup({ onLogin }) {
       setStatus("Cadastro concluído!");
       onLogin?.();
     } catch (err) {
-      setStatus("Erro: " + (err.response?.data || err.message));
+      setStatus("Erro: " + (err.response?.data?.message || err.message));
     }
   };
 
