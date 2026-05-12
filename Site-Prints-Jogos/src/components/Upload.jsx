@@ -38,7 +38,7 @@ export default function Upload() {
       setGame("");
       setDescription("");
     } catch (err) {
-      setStatus("Erro: " + (err.response?.data || err.message));
+      setStatus("Erro: " + (err.response?.data?.message || err.message));
     }
   };
 
