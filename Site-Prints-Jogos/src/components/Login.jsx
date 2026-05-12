@@ -19,7 +19,7 @@ export default function Login({ onLoginSuccess }) {
       setStatus("Login realizado!");
       onLoginSuccess?.();
     } catch (err) {
-      setStatus("Erro: " + (err.response?.data || err.message));
+      setStatus("Erro: " + (err.response?.data?.message || err.message));
     }
   };
 
