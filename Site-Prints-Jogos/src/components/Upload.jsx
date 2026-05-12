@@ -18,6 +18,8 @@ export default function Upload() {
     if (!file) return setStatus("Selecione um arquivo");
     if (!game) return setStatus("Informe o nome do jogo");
 
+    if (!file.type.startsWith("image/")) return setStatus("Selecione apenas arquivos de imagem.");
+
     const token = localStorage.getItem("token");
     if (!token) return setStatus("Faça login primeiro");
 
@@ -50,6 +52,7 @@ export default function Upload() {
         <input
           type="file"
           className="form-control"
+          accept="image/*"
           onChange={e => setFile(e.target.files?.[0] || null)}
         />
       </div>
