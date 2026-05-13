@@ -23,16 +23,20 @@ export default function Login({ onLoginSuccess }) {
 
   return (
     <>
+      <label className="form-label" htmlFor="login-email">Email</label>
       <input
+        id="login-email"
         type="email"
-        placeholder="Email"
+        placeholder="seu@email.com"
         className="form-control mb-2"
         value={email}
         onChange={e => setEmail(e.target.value)}
       />
+      <label className="form-label" htmlFor="login-senha">Senha</label>
       <input
+        id="login-senha"
         type="password"
-        placeholder="Senha"
+        placeholder="••••••••"
         className="form-control mb-2"
         value={senha}
         onChange={e => setSenha(e.target.value)}
@@ -40,7 +44,11 @@ export default function Login({ onLoginSuccess }) {
       <button className="btn btn-outline-light w-100" onClick={handleLogin}>
         Entrar
       </button>
-      {status && <p className="status">{status}</p>}
+      {status && (
+        <p className={`status${status.startsWith("Erro:") ? " status-error" : status === "Login realizado!" ? " status-success" : ""}`}>
+          {status}
+        </p>
+      )}
     </>
   );
 }
