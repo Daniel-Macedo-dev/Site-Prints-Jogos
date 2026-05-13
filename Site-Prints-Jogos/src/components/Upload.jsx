@@ -2,6 +2,9 @@ import { useState } from "react";
 import axios from "axios";
 import { API_BASE, getApiErrorMessage } from "../api";
 
+const MAX_UPLOAD_SIZE_MB = 10;
+const MAX_UPLOAD_SIZE_BYTES = MAX_UPLOAD_SIZE_MB * 1024 * 1024;
+
 export default function Upload({ onUploadSuccess, onAuthError }) {
   const [file, setFile] = useState(null);
   const [game, setGame] = useState("");
@@ -17,6 +20,7 @@ export default function Upload({ onUploadSuccess, onAuthError }) {
     if (!game) return setStatus("Informe o nome do jogo");
 
     if (!file.type.startsWith("image/")) return setStatus("Selecione apenas arquivos de imagem.");
+    if (file.size > MAX_UPLOAD_SIZE_BYTES) return setStatus("Arquivo muito grande. O limite é de 10 MB.");
 
     const token = localStorage.getItem("token");
     if (!token) return setStatus("Faça login primeiro");
