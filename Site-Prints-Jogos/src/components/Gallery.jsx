@@ -200,11 +200,8 @@ export default function Gallery({ refreshKey = 0 }) {
           {filtered.map((p) => (
             <div key={p.id ?? `${p.game}-${p.url}`} className="col-sm-6 col-md-4 col-lg-3 mb-3">
               <div className="card shadow-sm">
-                <img
-                  src={p.url}
-                  className="card-img-top"
-                  alt={p.game}
-                  style={{ height: 180, objectFit: "cover", cursor: "pointer" }}
+                <div
+                  className="card-img-wrap"
                   onClick={() =>
                     setSelected({
                       url: p.url,
@@ -214,11 +211,20 @@ export default function Gallery({ refreshKey = 0 }) {
                       uploadDate: p.uploadDate,
                     })
                   }
-                />
+                >
+                  <img src={p.url} className="card-img-top" alt={p.game} />
+                </div>
                 <div className="card-body">
                   <h5 className="card-title">{p.game}</h5>
-                  <p className="card-text">{p.description}</p>
-                  <small>Enviado por: {p.username || "Desconhecido"}</small>
+                  {p.description && <p className="card-text">{p.description}</p>}
+                  <div className="card-meta">
+                    <span className="card-username">por {p.username || "?"}</span>
+                    {p.uploadDate && (
+                      <span className="card-date">
+                        {new Date(p.uploadDate).toLocaleDateString("pt-BR")}
+                      </span>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
