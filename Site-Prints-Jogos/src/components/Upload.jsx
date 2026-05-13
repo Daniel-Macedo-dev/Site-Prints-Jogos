@@ -53,27 +53,35 @@ export default function Upload({ onUploadSuccess, onAuthError }) {
 
   return (
     <div className="upload-container">
-      <h3 style={{ marginTop: 0 }}>Upload de Print</h3>
+      <h3 className="upload-title">Upload de Print</h3>
 
-      <div className="upload-area mb-3">
-        <input
-          type="file"
-          className="form-control"
-          accept="image/*"
-          onChange={e => setFile(e.target.files?.[0] || null)}
-        />
+      <div className="mb-3">
+        <label className="form-label">Arquivo de imagem</label>
+        <div className="upload-area">
+          <input
+            type="file"
+            className="form-control"
+            accept="image/*"
+            onChange={e => setFile(e.target.files?.[0] || null)}
+          />
+          {file && <p className="upload-filename">{file.name}</p>}
+        </div>
       </div>
 
+      <label className="form-label" htmlFor="upload-game">Nome do jogo</label>
       <input
+        id="upload-game"
         type="text"
-        placeholder="Nome do jogo"
+        placeholder="Ex: The Last of Us"
         className="form-control mb-2"
         value={game}
         onChange={e => setGame(e.target.value)}
       />
+      <label className="form-label" htmlFor="upload-desc">Descrição</label>
       <input
+        id="upload-desc"
         type="text"
-        placeholder="Descrição"
+        placeholder="Opcional"
         className="form-control mb-2"
         value={description}
         onChange={e => setDescription(e.target.value)}
@@ -83,7 +91,11 @@ export default function Upload({ onUploadSuccess, onAuthError }) {
         Enviar
       </button>
 
-      {status && <p className="status">{status}</p>}
+      {status && (
+        <p className={`status${status.startsWith("Erro:") ? " status-error" : status === "Upload concluído!" ? " status-success" : ""}`}>
+          {status}
+        </p>
+      )}
 
       {printInfo && (
         <div className="upload-result">
