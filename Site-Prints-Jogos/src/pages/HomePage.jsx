@@ -1,12 +1,15 @@
+import { useState } from "react";
 import Upload from "../components/Upload";
 import Gallery from "../components/Gallery";
 
 export default function HomePage({ isLoggedIn }) {
+  const [refreshKey, setRefreshKey] = useState(0);
+
   return (
     <>
       {isLoggedIn ? (
         <div className="mb-4">
-          <Upload />
+          <Upload onUploadSuccess={() => setRefreshKey(k => k + 1)} />
         </div>
       ) : (
         <div className="mb-4 auth-container" style={{ maxWidth: 720 }}>
@@ -17,7 +20,7 @@ export default function HomePage({ isLoggedIn }) {
         </div>
       )}
 
-      <Gallery />
+      <Gallery refreshKey={refreshKey} />
     </>
   );
 }
