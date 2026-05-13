@@ -26,7 +26,7 @@ export default function App() {
 
       <div className="main-content container">
         <Routes>
-          <Route path="/" element={<HomePage isLoggedIn={isLoggedIn} />} />
+          <Route path="/" element={<HomePage isLoggedIn={isLoggedIn} onAuthError={handleLogout} />} />
           <Route
             path="/auth"
             element={
