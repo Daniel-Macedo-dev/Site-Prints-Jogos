@@ -1,6 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
-import { API_BASE } from "../api";
+import { API_BASE, getApiErrorMessage } from "../api";
 
 export default function Login({ onLoginSuccess }) {
   const [email, setEmail] = useState("");
@@ -17,7 +17,7 @@ export default function Login({ onLoginSuccess }) {
       setStatus("Login realizado!");
       onLoginSuccess?.();
     } catch (err) {
-      setStatus("Erro: " + (err.response?.data?.message || err.message));
+      setStatus("Erro: " + getApiErrorMessage(err));
     }
   };
 
