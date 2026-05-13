@@ -4,7 +4,7 @@ import axios from "axios";
 const API_BASE =
   (import.meta.env?.VITE_API_URL?.toString() || "http://localhost:8080").replace(/\/$/, "");
 
-export default function Upload() {
+export default function Upload({ onUploadSuccess }) {
   const [file, setFile] = useState(null);
   const [game, setGame] = useState("");
   const [description, setDescription] = useState("");
@@ -36,6 +36,7 @@ export default function Upload() {
 
       setPrintInfo(res.data);
       setStatus("Upload concluído!");
+      onUploadSuccess?.();
       setFile(null);
       setGame("");
       setDescription("");
