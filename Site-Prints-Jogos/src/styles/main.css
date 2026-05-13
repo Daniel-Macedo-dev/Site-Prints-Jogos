@@ -200,30 +200,6 @@ footer a {
   font-weight: bold;
 }
 
-/* Gallery (grid antigo do App.css) */
-.gallery-container {
-  margin: 2rem auto;
-  text-align: center;
-}
-
-.gallery-container .grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1.5rem;
-  margin-top: 1rem;
-}
-
-/* Card “info” antigo */
-.card .info { padding: 0.7rem; }
-.card .info h3 {
-  margin: 0.3rem 0;
-  font-size: 1.1rem;
-  color: #fff;
-}
-.card .info p {
-  font-size: 0.9rem;
-  color: rgba(255,255,255,0.75);
-}
 
 /* Links do resultado de upload */
 .upload-container .upload-result a {
