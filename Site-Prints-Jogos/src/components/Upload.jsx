@@ -1,8 +1,8 @@
 import { useState } from "react";
 import axios from "axios";
-import { API_BASE } from "../api";
+import { API_BASE, getApiErrorMessage } from "../api";
 
-export default function Upload({ onUploadSuccess }) {
+export default function Upload({ onUploadSuccess, onAuthError }) {
   const [file, setFile] = useState(null);
   const [game, setGame] = useState("");
   const [description, setDescription] = useState("");
@@ -39,7 +39,11 @@ export default function Upload({ onUploadSuccess }) {
       setGame("");
       setDescription("");
     } catch (err) {
-      setStatus("Erro: " + (err.response?.data?.message || err.message));
+      setStatus("Erro: " + getApiErrorMessage(err));
+      if (err.response?.status === 401) {
+        localStorage.removeItem("token");
+        onAuthError?.();
+      }
     }
   };
 
