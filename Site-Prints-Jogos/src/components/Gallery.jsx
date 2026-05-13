@@ -17,7 +17,6 @@ export default function Gallery({ refreshKey = 0 }) {
   const [prints, setPrints] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState(null);
-  const [source, setSource] = useState("api"); // "api" | "mock"
 
   // Controls
   const [search, setSearch] = useState("");
@@ -30,7 +29,6 @@ export default function Gallery({ refreshKey = 0 }) {
 
     async function load() {
       setLoading(true);
-      setSource("api");
 
       const token = localStorage.getItem("token");
 
@@ -50,7 +48,6 @@ export default function Gallery({ refreshKey = 0 }) {
         if (!alive) return;
         console.warn("[Gallery] API failed, falling back to mock:", err?.message || err);
 
-        setSource("mock");
         setPrints(Array.isArray(mockPrints) ? mockPrints : []);
         setLoading(false);
       }
@@ -172,7 +169,7 @@ export default function Gallery({ refreshKey = 0 }) {
         </div>
 
         <div className="controls-meta text-muted">
-          {loading ? "Carregando..." : `${filtered.length} print(s) • fonte: ${source}`}
+          {loading ? "Carregando..." : `${filtered.length} print(s)`}
         </div>
       </div>
 
