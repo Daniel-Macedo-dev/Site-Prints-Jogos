@@ -15,7 +15,7 @@ function parseDateMaybe(v) {
   return Number.isNaN(d.getTime()) ? null : d;
 }
 
-export default function Gallery() {
+export default function Gallery({ refreshKey = 0 }) {
   const [prints, setPrints] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState(null);
@@ -62,7 +62,7 @@ export default function Gallery() {
     return () => {
       alive = false;
     };
-  }, []);
+  }, [refreshKey]);
 
   // ESC fecha modal
   useEffect(() => {
