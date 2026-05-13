@@ -25,23 +25,29 @@ export default function Signup({ onLogin }) {
 
   return (
     <>
+      <label className="form-label" htmlFor="signup-nome">Nome</label>
       <input
+        id="signup-nome"
         type="text"
-        placeholder="Nome"
+        placeholder="Seu nome"
         className="form-control mb-2"
         value={nome}
         onChange={e => setNome(e.target.value)}
       />
+      <label className="form-label" htmlFor="signup-email">Email</label>
       <input
+        id="signup-email"
         type="email"
-        placeholder="Email"
+        placeholder="seu@email.com"
         className="form-control mb-2"
         value={email}
         onChange={e => setEmail(e.target.value)}
       />
+      <label className="form-label" htmlFor="signup-senha">Senha</label>
       <input
+        id="signup-senha"
         type="password"
-        placeholder="Senha"
+        placeholder="••••••••"
         className="form-control mb-2"
         value={senha}
         onChange={e => setSenha(e.target.value)}
@@ -49,7 +55,11 @@ export default function Signup({ onLogin }) {
       <button className="btn btn-outline-light w-100" onClick={handleSignup}>
         Cadastrar
       </button>
-      {status && <p className="status">{status}</p>}
+      {status && (
+        <p className={`status${status.startsWith("Erro:") ? " status-error" : status === "Cadastro concluído!" ? " status-success" : ""}`}>
+          {status}
+        </p>
+      )}
     </>
   );
 }
