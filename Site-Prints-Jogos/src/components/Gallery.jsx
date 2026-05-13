@@ -16,7 +16,7 @@ function parseDateMaybe(v) {
 export default function Gallery({ refreshKey = 0 }) {
   const [prints, setPrints] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [selected, setSelected] = useState(null);
+  const [selectedIndex, setSelectedIndex] = useState(null);
 
   // Controls
   const [search, setSearch] = useState("");
@@ -58,18 +58,6 @@ export default function Gallery({ refreshKey = 0 }) {
       alive = false;
     };
   }, [refreshKey]);
-
-  // ESC fecha modal
-  useEffect(() => {
-    if (!selected) return;
-
-    const onKeyDown = (e) => {
-      if (e.key === "Escape") setSelected(null);
-    };
-
-    window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
-  }, [selected]);
 
   const games = useMemo(() => {
     const set = new Set();
@@ -121,6 +109,30 @@ export default function Gallery({ refreshKey = 0 }) {
 
     return list;
   }, [prints, search, game, user, sort]);
+
+  // Clamp or close selectedIndex when filtered list shrinks
+  useEffect(() => {
+    if (selectedIndex === null) return;
+    if (filtered.length === 0) {
+      setSelectedIndex(null);
+    } else if (selectedIndex >= filtered.length) {
+      setSelectedIndex(filtered.length - 1);
+    }
+  }, [filtered.length, selectedIndex]);
+
+  // Keyboard navigation — Escape, ArrowLeft, ArrowRight
+  useEffect(() => {
+    if (selectedIndex === null) return;
+    const onKeyDown = (e) => {
+      if (e.key === "Escape") setSelectedIndex(null);
+      if (e.key === "ArrowRight") setSelectedIndex(i => Math.min(i + 1, filtered.length - 1));
+      if (e.key === "ArrowLeft") setSelectedIndex(i => Math.max(i - 1, 0));
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [selectedIndex, filtered.length]);
+
+  const selectedPrint = selectedIndex !== null ? filtered[selectedIndex] : null;
 
   const clearFilters = () => {
     setSearch("");
@@ -197,20 +209,12 @@ export default function Gallery({ refreshKey = 0 }) {
         </div>
       ) : (
         <div className="row">
-          {filtered.map((p) => (
+          {filtered.map((p, idx) => (
             <div key={p.id ?? `${p.game}-${p.url}`} className="col-sm-6 col-md-4 col-lg-3 mb-3">
               <div className="card shadow-sm">
                 <div
                   className="card-img-wrap"
-                  onClick={() =>
-                    setSelected({
-                      url: p.url,
-                      game: p.game,
-                      description: p.description,
-                      username: p.username,
-                      uploadDate: p.uploadDate,
-                    })
-                  }
+                  onClick={() => setSelectedIndex(idx)}
                 >
                   <img src={p.url} className="card-img-top" alt={p.game} />
                 </div>
@@ -232,11 +236,11 @@ export default function Gallery({ refreshKey = 0 }) {
         </div>
       )}
 
-      {selected && (
+      {selectedPrint && (
         <div
           className="modal show d-block"
           tabIndex="-1"
-          onClick={() => setSelected(null)}
+          onClick={() => setSelectedIndex(null)}
           role="dialog"
           aria-modal="true"
         >
@@ -244,26 +248,47 @@ export default function Gallery({ refreshKey = 0 }) {
             <div className="modal-content">
               <div className="modal-header modal-header-custom">
                 <div className="modal-title-wrap">
-                  <div className="modal-title-text">{selected.game}</div>
+                  <div className="modal-title-text">{selectedPrint.game}</div>
                   <div className="modal-subtitle text-muted">
-                    {selected.username ? `por ${selected.username}` : "usuário desconhecido"}
-                    {selected.uploadDate ? ` • ${new Date(selected.uploadDate).toLocaleString()}` : ""}
+                    {selectedPrint.username ? `por ${selectedPrint.username}` : "usuário desconhecido"}
+                    {selectedPrint.uploadDate ? ` • ${new Date(selectedPrint.uploadDate).toLocaleString()}` : ""}
+                    {` • ${selectedIndex + 1} de ${filtered.length}`}
                   </div>
                 </div>
 
                 <div className="modal-actions">
-                  <a className="btn btn-outline-light" href={selected.url} target="_blank" rel="noreferrer">
+                  <a className="btn btn-outline-light" href={selectedPrint.url} target="_blank" rel="noreferrer">
                     Abrir
                   </a>
-                  <button className="btn btn-outline-light" onClick={() => setSelected(null)} type="button">
+                  <button className="btn btn-outline-light" onClick={() => setSelectedIndex(null)} type="button">
                     Fechar
                   </button>
                 </div>
               </div>
 
               <div className="modal-body p-0">
-                <img src={selected.url} alt={selected.game} className="img-fluid rounded" />
-                {selected.description ? <div className="modal-desc">{selected.description}</div> : null}
+                <div className="modal-nav-wrap">
+                  <button
+                    className="modal-nav-btn modal-nav-prev"
+                    onClick={() => setSelectedIndex(i => Math.max(i - 1, 0))}
+                    disabled={selectedIndex === 0}
+                    aria-label="Print anterior"
+                    type="button"
+                  >
+                    ‹
+                  </button>
+                  <img src={selectedPrint.url} alt={selectedPrint.game} className="img-fluid rounded" />
+                  <button
+                    className="modal-nav-btn modal-nav-next"
+                    onClick={() => setSelectedIndex(i => Math.min(i + 1, filtered.length - 1))}
+                    disabled={selectedIndex === filtered.length - 1}
+                    aria-label="Próximo print"
+                    type="button"
+                  >
+                    ›
+                  </button>
+                </div>
+                {selectedPrint.description ? <div className="modal-desc">{selectedPrint.description}</div> : null}
               </div>
             </div>
           </div>
