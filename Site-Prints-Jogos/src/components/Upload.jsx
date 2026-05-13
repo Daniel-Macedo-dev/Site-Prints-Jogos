@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { API_BASE, getApiErrorMessage } from "../api";
 
@@ -11,6 +11,40 @@ export default function Upload({ onUploadSuccess, onAuthError }) {
   const [description, setDescription] = useState("");
   const [status, setStatus] = useState("");
   const [printInfo, setPrintInfo] = useState(null);
+  const [previewUrl, setPreviewUrl] = useState(null);
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const [isUploading, setIsUploading] = useState(false);
+  const previewUrlRef = useRef(null);
+
+  useEffect(() => {
+    return () => {
+      if (previewUrlRef.current) URL.revokeObjectURL(previewUrlRef.current);
+    };
+  }, []);
+
+  const handleFileChange = (e) => {
+    const selected = e.target.files?.[0] || null;
+    if (previewUrlRef.current) {
+      URL.revokeObjectURL(previewUrlRef.current);
+      previewUrlRef.current = null;
+    }
+    setFile(selected);
+    if (selected && selected.type.startsWith("image/")) {
+      const url = URL.createObjectURL(selected);
+      previewUrlRef.current = url;
+      setPreviewUrl(url);
+    } else {
+      setPreviewUrl(null);
+    }
+  };
+
+  const clearPreview = () => {
+    if (previewUrlRef.current) {
+      URL.revokeObjectURL(previewUrlRef.current);
+      previewUrlRef.current = null;
+    }
+    setPreviewUrl(null);
+  };
 
   const handleUpload = async () => {
     setStatus("");
@@ -30,15 +64,21 @@ export default function Upload({ onUploadSuccess, onAuthError }) {
     formData.append("game", game);
     formData.append("description", description);
 
+    setIsUploading(true);
+    setUploadProgress(0);
+
     try {
-      setStatus("Enviando...");
       const res = await axios.post(`${API_BASE}/prints/upload`, formData, {
         headers: { Authorization: `Bearer ${token}` },
+        onUploadProgress: (e) => {
+          if (e.total) setUploadProgress(Math.round((e.loaded / e.total) * 100));
+        },
       });
 
       setPrintInfo(res.data);
       setStatus("Upload concluído!");
       onUploadSuccess?.();
+      clearPreview();
       setFile(null);
       setGame("");
       setDescription("");
@@ -48,6 +88,9 @@ export default function Upload({ onUploadSuccess, onAuthError }) {
         localStorage.removeItem("token");
         onAuthError?.();
       }
+    } finally {
+      setIsUploading(false);
+      setUploadProgress(0);
     }
   };
 
@@ -62,10 +105,15 @@ export default function Upload({ onUploadSuccess, onAuthError }) {
             type="file"
             className="form-control"
             accept="image/*"
-            onChange={e => setFile(e.target.files?.[0] || null)}
+            onChange={handleFileChange}
           />
           {file && <p className="upload-filename">{file.name}</p>}
         </div>
+        {previewUrl && (
+          <div className="upload-preview">
+            <img src={previewUrl} alt="Pré-visualização" className="upload-preview-img" />
+          </div>
+        )}
       </div>
 
       <label className="form-label" htmlFor="upload-game">Nome do jogo</label>
@@ -87,8 +135,17 @@ export default function Upload({ onUploadSuccess, onAuthError }) {
         onChange={e => setDescription(e.target.value)}
       />
 
-      <button className="btn btn-outline-light w-100" onClick={handleUpload}>
-        Enviar
+      {isUploading && (
+        <div className="upload-progress">
+          <div className="upload-progress-track">
+            <div className="upload-progress-bar" style={{ width: `${uploadProgress}%` }} />
+          </div>
+          <span className="upload-progress-text">{uploadProgress}%</span>
+        </div>
+      )}
+
+      <button className="btn btn-outline-light w-100" onClick={handleUpload} disabled={isUploading}>
+        {isUploading ? "Enviando..." : "Enviar print"}
       </button>
 
       {status && (
