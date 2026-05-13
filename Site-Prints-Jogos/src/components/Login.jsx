@@ -1,8 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
-
-const API_BASE =
-  (import.meta.env?.VITE_API_URL?.toString() || "http://localhost:8080").replace(/\/$/, "");
+import { API_BASE } from "../api";
 
 export default function Login({ onLoginSuccess }) {
   const [email, setEmail] = useState("");
