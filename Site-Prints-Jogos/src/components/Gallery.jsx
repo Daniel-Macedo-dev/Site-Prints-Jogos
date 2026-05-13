@@ -1,9 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import { mockPrints } from "../mockData";
-
-const API_BASE =
-  (import.meta.env?.VITE_API_URL?.toString() || "http://localhost:8080").replace(/\/$/, "");
+import { API_BASE } from "../api";
 
 function safeLower(v) {
   return (v ?? "").toString().trim().toLowerCase();
